@@ -3,14 +3,15 @@ document.addEventListener('turbolinks:load', function(){
       let source_currency = document.getElementById('source_currency').value
       let target_currency = document.getElementById('target_currency').value
       let amount = document.getElementById('amount').value
-
-       
-      let url = new URL("http:localhost:3000/convert")
       let params = {source_currency: source_currency
         , target_currency: target_currency
         , amount: amount }
-      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-  
+      
+      let query = Object.keys(params)
+      .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+      .join('&');  
+      let url = '/convert?' + query;
+
       fetch(url)
       .then(response => {
         return response.json();
